@@ -248,7 +248,7 @@ export function LandPlaneCard(props: LandPlaneCardProps) {
 
                 LandProgram.initialiseLandPlane({
                     requiredKeys: {
-                        landPlaneAccPublicKey: keyPairForNewLand.publicKey,
+                        land_plane_acc_pubkey: keyPairForNewLand.publicKey,
                     },
                 })
             ];

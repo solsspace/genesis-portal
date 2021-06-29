@@ -7,9 +7,9 @@ export const LAND_PROGRAM_ACC_PUBLIC_KEY = new PublicKey('73SDVkNXf4UBhttg1N6sQa
 
 export type InitialiseLandPlaneParams = {
     requiredKeys: {
-        // The new land account.
-        // Req: [writable]
-        landPlaneAccPublicKey: PublicKey,
+        // The new land plane account.
+        // [writable]
+        land_plane_acc_pubkey: PublicKey,
     },
 }
 
@@ -27,50 +27,31 @@ export const InitialiseLandPlaneArgs_SCHEMA = new Map<any, any>([[
     },
 ]])
 
-// ******** Mint ********************************************************
+// ******** MintNext ********************************************************
 
-export type MintParams = {
-    // The person that will own the minted land piece.
-    // Signature required to prove that the person who
-    // owns the NFT token atm. is wanting to try do this
-    // mint.
-    // Req: [signer]
-    newNFTTokenAccOwnerAccPubKey: PublicKey;
+export type MintNextParams = {
+    // Public key of the normal system account that is the owner of the given NFT holding SPL
+    // associate token account. A signature is required for this account to confirm
+    // that the given owner would like to associate the new piece of land with their NFT.
+    // [signer]
+    nft_assoc_token_acc_owner_pubkey: PublicKey;
 
-    // The person that will pay for any rent required in
-    // the mint process.
-    // Req: [signer]
-    rentPayerAccPublicKey: PublicKey;
+    // This key should be a PDA corresponding to the next piece of land.
+    // i.e. PDA of (['solsspace-land', land_plane_acc_pubkey, x, y], land_program_acc_pubkey)
+    // [writable]
+    land_asset_acc_pubkey: PublicKey;
 
-    // new land asset account that is the PDA of:
-    // ([
-    //      'land',
-    //       landProgramAccPublicKey
-    // ], landProgramAccPublicKey)
-    // Req: [writable]
-    landPlaneAccPublicKey: PublicKey;
+    // Public key of the land plane account from which the next piece of land will be minted.
+    // [writable]
+    land_plane_acc_pubkey: PublicKey;
 
-    // new land asset account that is the PDA of:
-    // ([
-    //      'land',
-    //      nextXValue,
-    //      nextYValue,
-    // ], landProgramAccPublicKey)
-    // Req: [writable]
-    landAssetAccPublicKey: PublicKey;
+    // Public key of the land plane account from which the next piece of land will be minted.
+    // []
+    nft_assoc_token_acc_pubkey: PublicKey;
 
-    // spl mint acc for nft
-    // Req: []
-    nftMintAccPubKey: PublicKey;
-
-    // spl associated token holding acc for nft
-    // i.e. PDA of:
-    // ([
-    //      newNFTTokenAccOwnerAccPubKey, tokenProgramPubKey, nftMintAccPubKey
-    //  ], splAssociatedTokenAccProgramID)
-    // Note: must hold a balance of 1 of this
-    // Req: []
-    newNFTOwnerAccAssociatedTokenAccPublicKey: PublicKey
+    // Public key of the SPL NFT Mint account.
+    // []
+    nft_mint_acc_pubkey: PublicKey;
 }
 
 export const LandProgram = {
@@ -88,14 +69,14 @@ export const LandProgram = {
                 // Addresses not requiring signatures are 2nd, and in the following order:
                 //
                 // those that require write access
-                {pubkey: params.requiredKeys.landPlaneAccPublicKey, isSigner: false, isWritable: true},
+                {pubkey: params.requiredKeys.land_plane_acc_pubkey, isSigner: false, isWritable: true},
                 // those that require read-only access
                 {pubkey: SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false},
             ],
             data: Buffer.from(serialize(InitialiseLandPlaneArgs_SCHEMA, new InitialiseLandPlaneArgs()))
         })
     },
-    mint(params: MintParams): TransactionInstruction {
+    mint(params: MintNextParams): TransactionInstruction {
         return new TransactionInstruction({
             programId: LAND_PROGRAM_ACC_PUBLIC_KEY,
             keys: [
@@ -104,18 +85,17 @@ export const LandProgram = {
                 //
                 // those that require write access
                 // those that require read-only access
-                {pubkey: params.newNFTTokenAccOwnerAccPubKey, isSigner: true, isWritable: false},
-                {pubkey: params.rentPayerAccPublicKey, isSigner: true, isWritable: false},
+                {pubkey: params.nft_assoc_token_acc_owner_pubkey, isSigner: true, isWritable: false},
 
                 // 2nd
                 // Addresses not requiring signatures are 2nd, and in the following order:
                 //
                 // those that require write access
-                {pubkey: params.landPlaneAccPublicKey, isSigner: false, isWritable: true},
-                {pubkey: params.landAssetAccPublicKey, isSigner: false, isWritable: true},
+                {pubkey: params.land_asset_acc_pubkey, isSigner: false, isWritable: true},
+                {pubkey: params.land_plane_acc_pubkey, isSigner: false, isWritable: true},
                 // those that require read-only access
-                {pubkey: params.newNFTOwnerAccAssociatedTokenAccPublicKey, isSigner: false, isWritable: false},
-                {pubkey: LAND_PROGRAM_ACC_PUBLIC_KEY, isSigner: false, isWritable: false},
+                {pubkey: params.nft_assoc_token_acc_pubkey, isSigner: false, isWritable: false},
+                {pubkey: params.nft_mint_acc_pubkey, isSigner: false, isWritable: false},
             ],
             data: undefined
         })
