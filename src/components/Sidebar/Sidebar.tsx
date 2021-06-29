@@ -7,7 +7,7 @@ import {publicRoutes} from '../../route';
 import {useHistory} from 'react-router-dom';
 import {fade} from "@material-ui/core/styles";
 
-export const drawerWidth = 260;
+export const drawerWidth = 240;
 export const drawerMiniWidth = 55;
 
 const useStyles = makeStyles((theme: Theme) => ({
