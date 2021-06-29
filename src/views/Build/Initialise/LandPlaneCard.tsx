@@ -25,7 +25,7 @@ import {
     LandProgram,
     LandPlane,
     LandPlaneVersion, LAND_PLANE_ACC_DATA_LEN, LAND_PROGRAM_ACC_PUBLIC_KEY,
-} from "../../../pkg/solspace/LandProgram";
+} from "../../../pkg/solsspace/LandProgram";
 
 const useStyles = makeStyles((theme: Theme) => ({
     cardRoot: {},

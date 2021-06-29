@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 import {Button} from "@material-ui/core";
 import {useSolanaContext} from "../../../context/Solana";
 import {Context, Logs, PublicKey, SystemProgram, Transaction, TransactionInstruction} from "@solana/web3.js";
-import {LAND_PROGRAM_ACC_PUBLIC_KEY} from "../../../pkg/solspace/LandProgram";
+import {LAND_PROGRAM_ACC_PUBLIC_KEY} from "../../../pkg/solsspace/LandProgram";
 import {useSnackbar} from "notistack";
 
 export default function Mint() {

@@ -1,6 +1,5 @@
 import {PublicKey, SYSVAR_RENT_PUBKEY, TransactionInstruction} from "@solana/web3.js";
 import {serialize} from "borsh";
-import {} from '@solana/spl-token';
 
 export const LAND_PROGRAM_ACC_PUBLIC_KEY = new PublicKey('73SDVkNXf4UBhttg1N6sQa3EVyge9hN7ESSwU7pzDb5T');
 
@@ -9,7 +8,6 @@ export const LAND_PROGRAM_ACC_PUBLIC_KEY = new PublicKey('73SDVkNXf4UBhttg1N6sQa
 export type InitialiseLandPlaneParams = {
     requiredKeys: {
         // The new land account.
-        // PDA of
         // Req: [writable]
         landPlaneAccPublicKey: PublicKey,
     },
