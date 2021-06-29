@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
     const classes = useStyles();
-    const [sideBarOpen, setSidebarOpen] = useState(false);
-    const [miniActive, setMiniActive] = useState(true);
+    const [sideBarOpen, setSidebarOpen] = useState(true);
+    const [miniActive, setMiniActive] = useState(false);
 
     return (
         <BrowserRouter>
